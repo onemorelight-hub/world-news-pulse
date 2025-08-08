@@ -254,7 +254,7 @@ if not news_df.empty:
     )
     
     # Select columns for display
-    display_df = display_df[['title_display', 'desc_display', 'sentiment_display', 'link_display']]
+    display_df = display_df[['title_display', 'desc_display', 'date', 'sentiment_display', 'link_display']]
     display_df.columns = ['Title', 'Description', 'Date', 'Sentiment', 'Link']
     
     # Render table
@@ -263,6 +263,7 @@ if not news_df.empty:
         column_config={
             "Title": st.column_config.TextColumn("Title", width="large"),
             "Description": st.column_config.TextColumn("Description", width="large"),
+            "Date": st.column_config.TextColumn("Date", width="medium"),
             "Sentiment": st.column_config.TextColumn("Sentiment", width="small"),
             "Link": st.column_config.TextColumn("Link", width="small")
         },
