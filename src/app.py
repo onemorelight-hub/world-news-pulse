@@ -215,10 +215,10 @@ except Exception as e:
 # Improved News Articles Table
 st.subheader("📰 Top Indian News Articles")
 if not news_df.empty:
-    display_df = news_df[["title", "desc", "sentiment", "link"]].copy()
+    display_df = news_df[["title", "desc", "date", "sentiment", "link"]].copy()
     
     # Ensure required columns exist
-    for col in ['title', 'desc', 'sentiment', 'link']:
+    for col in ['title', 'desc', 'date', 'sentiment', 'link']:
         if col not in display_df.columns:
             display_df[col] = ''
     logger.info(f"display_df shape: {display_df.shape}")
@@ -226,7 +226,13 @@ if not news_df.empty:
     # Truncate title and desc for display
     display_df['title_display'] = display_df['title'].apply(lambda x: x[:50] + '...' if isinstance(x, str) and len(x) > 50 else x)
     display_df['desc_display'] = display_df['desc'].apply(lambda x: x[:100] + '...' if isinstance(x, str) and len(x) > 100 else x)
-
+    
+    # Format date
+    try:
+        display_df['date'] = pd.to_datetime(display_df['date']).dt.strftime('%Y-%m-%d %H:%M')
+    except Exception as e:
+        logger.warning(f"Error formatting date: {str(e)}")
+        display_df['date'] = display_df['date'].fillna('Unknown')
     
     # Map sentiment to CSS classes
     sentiment_styles = {
@@ -249,7 +255,7 @@ if not news_df.empty:
     
     # Select columns for display
     display_df = display_df[['title_display', 'desc_display', 'sentiment_display', 'link_display']]
-    display_df.columns = ['Title', 'Description', 'Sentiment', 'Link']
+    display_df.columns = ['Title', 'Description', 'Date', 'Sentiment', 'Link']
     
     # Render table
     st.dataframe(
