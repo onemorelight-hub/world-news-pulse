@@ -101,14 +101,13 @@ def parse_article(article_data, max_retries=4):
 def fetch_news(query="", period="1d", min_articles=30):
     try:
         googlenews = GoogleNews(lang='en', region='IN', period=period)
-        base_query = "India news" if not query else query
+        base_query = "India Top news" if not query else query
         # Default search terms when no query is provided
         search_terms = [
-            base_query,
+            base_query + "in India",
             "India Sensex",  # Stock market news
             "RBI MPC meeting",  # Economic policy
             "Indian stock market",  # Stock market
-            "India top news",  # General news
             "India economy"  # Economic news
         ] if not query else [base_query]  # Use only user query if provided
         all_articles = []
